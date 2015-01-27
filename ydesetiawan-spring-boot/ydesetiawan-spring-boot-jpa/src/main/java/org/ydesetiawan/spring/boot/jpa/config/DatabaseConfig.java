@@ -1,5 +1,5 @@
 /* Copyright (C) 2015 ASYX International B.V. All rights reserved. */
-package com.ydesetiawan.config;
+package org.ydesetiawan.spring.boot.jpa.config;
 
 import java.util.Properties;
 
@@ -77,5 +77,5 @@ public class DatabaseConfig {
         transactionManager.setEntityManagerFactory(emf);
 
         return transactionManager;
-
+    }
 }
