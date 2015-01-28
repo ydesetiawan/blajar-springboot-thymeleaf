@@ -1,4 +1,4 @@
-package org.ydesetiawan.spring.boot.jpa.config;
+package com.ydesetiawan.config;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;

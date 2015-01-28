@@ -1,5 +1,4 @@
-/* Copyright (C) 2015 ASYX International B.V. All rights reserved. */
-package org.ydesetiawan.spring.boot.jpa.config;
+package com.ydesetiawan.config;
 
 import java.util.Properties;
 

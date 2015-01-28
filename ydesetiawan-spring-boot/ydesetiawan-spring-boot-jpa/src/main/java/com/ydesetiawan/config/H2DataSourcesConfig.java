@@ -1,4 +1,4 @@
-package org.ydesetiawan.spring.boot.jpa.config;
+package com.ydesetiawan.config;
 
 import javax.sql.DataSource;
 
