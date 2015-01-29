@@ -18,5 +18,6 @@
 	<modules>
 		<module>ydesetiawan-spring-boot-jpa</module>
     <module>ydesetiawan-spring-boot-jpa2</module>
+    <module>ydesetiawan-spring-security-custom-login-form</module>
   </modules>
 </project>

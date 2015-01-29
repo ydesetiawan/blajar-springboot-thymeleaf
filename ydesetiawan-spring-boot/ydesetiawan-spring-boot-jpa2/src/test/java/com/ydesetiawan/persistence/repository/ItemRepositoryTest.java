@@ -29,7 +29,6 @@ import com.ydesetiawan.persistence.model.Item;
 @Test(dependsOnGroups = { "categoryRepositoryGroup" })
 public class ItemRepositoryTest extends AbstractTestNGSpringContextTests {
 
-    @SuppressWarnings("unused")
     private static Logger log = Logger.getLogger(ItemRepositoryTest.class);
 
     @Autowired
