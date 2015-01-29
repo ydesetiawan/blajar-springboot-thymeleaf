@@ -4,27 +4,22 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.ydesetiawan</groupId>
+		<groupId>com.ydesetiawan.spring.boot</groupId>
 		<artifactId>ydesetiawan-spring-boot</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.ydesetiawan.spring.security</groupId>
 	<artifactId>ydesetiawan-spring-security-custom-login-form</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>ydesetiawan-spring-security-custom-login-form</name>
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
