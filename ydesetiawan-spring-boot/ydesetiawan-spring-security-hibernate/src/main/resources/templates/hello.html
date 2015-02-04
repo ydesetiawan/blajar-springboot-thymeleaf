@@ -1,0 +1,27 @@
+<html>
+<body>
+	<h1>
+		Title : <span th:text="${title}"></span>
+	</h1>
+	<h1>
+		Message : <span th:text="${message}"></span>
+	</h1>
+
+	<div sec:authorize="hasRole('ROLE_USER')">
+		<!-- For login user -->
+		<a th:href="@{/j_spring_security_logout}">logoutUrl</a>
+		<form th:action="@{/logoutUrl}" method="post" id="logoutForm">
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+		</form>
+		<script>
+			function formSubmit() {
+				document.getElementById("logoutForm").submit();
+			}
+		</script>
+
+
+
+	</div>
+</body>
+</html>
