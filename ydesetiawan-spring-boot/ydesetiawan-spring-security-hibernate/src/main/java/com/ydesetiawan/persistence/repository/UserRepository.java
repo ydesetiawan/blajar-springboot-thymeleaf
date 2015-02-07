@@ -11,4 +11,6 @@ import com.ydesetiawan.persistence.model.User;
  */
 public interface UserRepository extends JpaRepository<User, String> {
 
+	User findByUsername(String username);
+
 }

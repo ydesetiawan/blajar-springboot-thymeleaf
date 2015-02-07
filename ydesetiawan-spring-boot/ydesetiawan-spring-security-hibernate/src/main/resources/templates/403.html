@@ -1,13 +1,6 @@
 <html>
 <body>
 	<h1>HTTP Status 403 - Access is denied</h1>
-
-	<h2 th:if="${empty username}">You do not have permission to access
-		this page!</h2>
-	<h2 th:unless="${empty username}">
-		Username : ${username} <br /> You do not have permission to access
-		this page!
-	</h2>
-
+	<span th:if="${username}" th:text="${username}"></span>
 </body>
 </html>

@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,49 +20,58 @@ import org.hibernate.annotations.GenericGenerator;
  * @since
  */
 @Entity
-@Table(name = "ydesetiawan_userRole")
+@Table(name = "ydesetiawan_userRole", uniqueConstraints = @UniqueConstraint(columnNames = {
+		"role", "user" }))
 public class UserRole implements Serializable {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = 1920583714607590726L;
+	private static final long serialVersionUID = 1920583714607590726L;
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(length = 36, nullable = false, updatable = false)
-    private String uuid;
+	@Id
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	@Column(length = 36, nullable = false, updatable = false)
+	private String uuid;
 
-    @ManyToOne
-    @JoinColumn(name = "user", nullable = false, updatable = false)
-    private User user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user", nullable = false, updatable = false)
+	private User user;
 
-    @Column(name = "role", length = 50, nullable = false)
-    private String role;
+	@Column(name = "role", length = 50, nullable = false)
+	private String role;
 
-    public String getUuid() {
-        return uuid;
-    }
+	public UserRole() {
+	}
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+	public UserRole(User user, String role) {
+		this.user = user;
+		this.role = role;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public String getUuid() {
+		return uuid;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
-    public String getRole() {
-        return role;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 }
