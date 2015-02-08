@@ -12,5 +12,6 @@
 	</parent>
 	<modules>
 		<module>ydesetiawan-spring-boot</module>
+		<module>ydesetiawan-xslt</module>
 	</modules>
 </project>
