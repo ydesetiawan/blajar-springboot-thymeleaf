@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<catalog datecreated="2015-01-12">
+<catalog datecreated="2015-01-12" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<cd>
 		<title>Empire Burlesque</title>
 		<artist>Bob Dylan</artist>

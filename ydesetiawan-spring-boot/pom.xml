@@ -14,5 +14,6 @@
 		<module>ydesetiawan-spring-boot-jpa2</module>
 		<module>ydesetiawan-spring-security-custom-login-form</module>
     <module>ydesetiawan-spring-security-hibernate</module>
+    <module>ydesetiawan-spring-boot-thymeleaf</module>
   </modules>
 </project>
