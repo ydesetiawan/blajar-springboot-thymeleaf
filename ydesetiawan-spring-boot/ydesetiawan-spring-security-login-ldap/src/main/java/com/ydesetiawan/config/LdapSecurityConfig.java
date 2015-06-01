@@ -30,7 +30,6 @@ import org.springframework.security.ldap.authentication.NullLdapAuthoritiesPopul
 import org.springframework.security.ldap.ppolicy.PasswordPolicyAwareContextSource;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.springframework.security.ldap.userdetails.UserDetailsContextMapper;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -126,11 +125,14 @@ public class LdapSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**", "/fonts/**", "/images/**", "/img/**",
                         "/js/**", "/public/**", "/signup", "/activation/**",
                         "/activation-success", "/resetpassword").permitAll();
+
         http.formLogin().loginPage("/login").defaultSuccessUrl("/")
                 .successHandler(customAuthenticationSuccessHandler())
-                .failureUrl("/login?error=failure")
-                .permitAll().and().authorizeRequests().antMatchers("/login")
-                .permitAll();
+                .failureUrl("/login?error=failure").permitAll().and()
+                .authorizeRequests().antMatchers("/login").permitAll()
+                .antMatchers("/home/**").access("hasRole('ADMIN')").and()
+                .exceptionHandling().accessDeniedPage("/403");
+        ;
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .permitAll();
@@ -164,12 +166,14 @@ public class LdapSecurityConfig extends WebSecurityConfigurerAdapter {
         return contextSource;
     }
 
-//    @Bean
-//    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
-//        CustomAuthenticationFailureHandler handler = new CustomAuthenticationFailureHandler();
-//        handler.setExceptionMappings(ldapSettings.getExceptionMappings());
-//        return handler;
-//    }
+    // @Bean
+    // public AuthenticationFailureHandler customAuthenticationFailureHandler()
+    // {
+    // CustomAuthenticationFailureHandler handler = new
+    // CustomAuthenticationFailureHandler();
+    // handler.setExceptionMappings(ldapSettings.getExceptionMappings());
+    // return handler;
+    // }
 
     @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {

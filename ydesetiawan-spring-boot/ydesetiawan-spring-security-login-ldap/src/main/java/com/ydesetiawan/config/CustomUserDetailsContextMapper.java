@@ -22,8 +22,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Profile("ldap")
-public class CustomUserDetailsContextMapper implements
-        UserDetailsContextMapper {
+public class CustomUserDetailsContextMapper implements UserDetailsContextMapper {
 
     @SuppressWarnings("unused")
     private static Logger log = Logger
@@ -38,6 +37,9 @@ public class CustomUserDetailsContextMapper implements
 
         PasswordPolicyResponseControl ppolicy = (PasswordPolicyResponseControl) ctx
                 .getObjectAttribute(PasswordPolicyControl.OID);
+        
+        
+        
         CustomUserDetails userDetails;
         if (ppolicy != null) {
             userDetails = ((CustomUserDetails) customUserDetailsService
@@ -46,6 +48,7 @@ public class CustomUserDetailsContextMapper implements
         } else {
             userDetails = ((CustomUserDetails) customUserDetailsService
                     .loadUserByUsername(username)).withDn(ctx.getDn());
+            
         }
         return userDetails;
     }
