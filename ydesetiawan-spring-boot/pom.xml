@@ -15,5 +15,6 @@
 		<module>ydesetiawan-spring-security-custom-login-form</module>
     <module>ydesetiawan-spring-security-hibernate</module>
     <module>ydesetiawan-spring-boot-thymeleaf</module>
+    <module>ydesetiawan-spring-security-login-ldap</module>
   </modules>
 </project>
