@@ -50,13 +50,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
 
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> setAuths = new HashSet<>();
 
         for (UserRole userRole : userRoles) {
             setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
         }
 
-        return new ArrayList<GrantedAuthority>(setAuths);
+        return new ArrayList<>(setAuths);
     }
 
 }

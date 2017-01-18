@@ -1,4 +1,4 @@
-package com.ydes.batch;
+package com.ydes.controller;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -40,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.ydes.batch.JobLauncherDetails;
 
 /**
  * @author edys
