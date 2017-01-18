@@ -26,9 +26,7 @@ public class MainController {
 	public ModelAndView defaultPage() {
 
 		ModelAndView model = new ModelAndView();
-		model.addObject("title", "Spring Security + Hibernate Example");
-		model.addObject("message", "This is default page!");
-		model.setViewName("hello");
+		model.setViewName("home");
 		return model;
 
 	}
@@ -85,9 +83,8 @@ public class MainController {
 	}
 
 	// for 403 access denied page
-	@RequestMapping(value = "/403", method = RequestMethod.GET)
+	@RequestMapping(value = "/notfound", method = RequestMethod.GET)
 	public ModelAndView accesssDenied() {
-
 		ModelAndView model = new ModelAndView();
 
 		// check if user is login
@@ -100,7 +97,6 @@ public class MainController {
 			model.addObject("username", userDetail.getUsername());
 
 		}
-
 		model.setViewName("403");
 		return model;
 

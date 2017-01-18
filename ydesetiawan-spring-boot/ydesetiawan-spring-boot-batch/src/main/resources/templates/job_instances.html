@@ -4,19 +4,9 @@
 <title
 	th:text="${@environment.getProperty('application_name')} + ' - ' + ${#messages.msg('label.job_instances.title')}">Job
 	Instances</title>
-<link rel="stylesheet" th:if="${#themes.code('name')==''}"
-	th:href="@{'/css/default-master.css'}" />
-<link rel="stylesheet" th:if="${#themes.code('name')!=''}"
-	th:href="@{'/css/' + ${#themes.code('name')} + '-master.css'}" />
 </head>
-<body
-	th:class="${#themes.code('skin')+(@xchange3Util.fetchCookie(#httpServletRequest.cookies, 'minifyMenu')!=null?' minified':'')}"
-	th:classappend="${#authentication.principal.perspective}">
-	<div th:replace="layout-dashboard :: header-panel"></div>
-	<div th:replace="layout-dashboard :: left-panel"></div>
+<body>
 	<div id="main" role="main">
-		<div th:replace="layout-dashboard :: default-ribbon"></div>
-
 		<div id="content">
 			<section>
 				<h1 th:text="${#messages.msg('label.job_instances.title')}">Jobs</h1>
@@ -62,7 +52,7 @@
 								class="timeago"
 								th:title="${@documentController.getIso8601DateFormat(job_name_executions.get(job_name_instance.key).createTime)}"
 								th:text="${job_name_executions.get(job_name_instance.key).createTime}"></span><span
-								th:if="${job_name_executions.get(job_name_instance.key)!=null and !@xchange3Util.showRelativeTime}"
+								th:if="${job_name_executions.get(job_name_instance.key)!=null}"
 								th:text="${#calendars.format(job_name_executions.get(job_name_instance.key).createTime,'dd MMM yyyy HH:mm')}"></span></td>
 							<td><span
 								th:if="${job_name_runtimes.get(job_name_instance.key)!=null}"
@@ -180,7 +170,7 @@
 								class="timeago"
 								th:title="${@documentController.getIso8601DateFormat(job_executions.get(instance.id).createTime)}"
 								th:text="${job_executions.get(instance.id).createTime}"></span><span
-								th:if="${job_executions.get(instance.id)!=null and !@xchange3Util.showRelativeTime}"
+								th:if="${job_executions.get(instance.id)!=null}"
 								th:text="${#calendars.format(job_executions.get(instance.id).createTime,'dd MMM yyyy HH:mm')}"></span>
 							</td>
 							<td
@@ -221,9 +211,6 @@
 			</section>
 		</div>
 	</div>
-	<div th:replace="layout-dashboard :: footer-panel"></div>
-	<div th:replace="layout-dashboard :: shortcut-panel"></div>
-	<div th:replace="base :: scripts"></div>
 	<script type="text/javascript">
 		//<![CDATA[
 		jQuery(document).ready(function() {
@@ -237,7 +224,5 @@
 		$("ul#menu-list li#administration-list").addClass("active");
 		//]]>
 	</script>
-
-	<div th:replace="base :: script-google-analytics"></div>
 </body>
 </html>

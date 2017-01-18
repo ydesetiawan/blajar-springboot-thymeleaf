@@ -14,5 +14,5 @@ CREATE TABLE `user_role` (
   FOREIGN KEY (`user`) REFERENCES `user` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `user` (`uuid`, `username`, `password`, `enabled`) VALUES ('60c07adc-dd75-11e6-8e71-0025ab69e4c2', 'admin', '$2a$06$I7Qxlcl1OSmC2BRZ6rIv6eKFrCPJ3hVsw23H4z9pjQK0Z9shQ3662', 1);
+INSERT INTO `user` (`uuid`, `username`, `password`, `enabled`) VALUES ('60c07adc-dd75-11e6-8e71-0025ab69e4c2', 'admin', '$2a$10$E6Bpa4EsexSuJclB.87ziupCcY6xBIq0baVYxUwA0.6AtQlO/qGNq', 1);
 INSERT INTO `user_role` (`uuid`, `role`, `user`) VALUES ('30805497-dd76-11e6-8e71-0025ab69e4c2', 'ADMIN', '60c07adc-dd75-11e6-8e71-0025ab69e4c2');
