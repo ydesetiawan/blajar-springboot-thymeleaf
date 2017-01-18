@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title
+	th:text="${@environment.getProperty('application_name')} + ' - ' + ${#messages.msg('label.job_instances.title')}">Job
+	Instances</title>
+<link rel="stylesheet" th:if="${#themes.code('name')==''}"
+	th:href="@{'/css/default-master.css'}" />
+<link rel="stylesheet" th:if="${#themes.code('name')!=''}"
+	th:href="@{'/css/' + ${#themes.code('name')} + '-master.css'}" />
+</head>
+<body
+	th:class="${#themes.code('skin')+(@xchange3Util.fetchCookie(#httpServletRequest.cookies, 'minifyMenu')!=null?' minified':'')}"
+	th:classappend="${#authentication.principal.perspective}">
+	<div th:replace="layout-dashboard :: header-panel"></div>
+	<div th:replace="layout-dashboard :: left-panel"></div>
+	<div id="main" role="main">
+		<div th:replace="layout-dashboard :: default-ribbon"></div>
+
+		<div id="content">
+			<section>
+				<h1 th:text="${#messages.msg('label.job_instances.title')}">Jobs</h1>
+				<div th:if="${alertSuccess}" class="alert alert-success fade in">
+					<a href="#" class="close" data-dismiss="alert">&times;</a><span
+						th:text="${alertSuccess}">Success message.</span>
+				</div>
+				<div th:if="${alertWarning}" class="alert alert-warning fade in">
+					<a href="#" class="close" data-dismiss="alert">&times;</a><span
+						th:text="${alertWarning}">Warning message.</span>
+				</div>
+				<table class="table"
+					th:if="${not #lists.isEmpty(job_name_instances)}">
+					<thead>
+						<tr>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.job_name')}">Job
+									Name</span></th>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.last_runtime')}">Last
+									Run Time</span></th>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.next_runtime')}">Next
+									Run Time</span></th>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.last_result')}">Last
+									Result</span></th>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.action')}">Action</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="job_name_instance : ${job_name_instances}">
+							<td
+								th:if="${@environment.getProperty('job_name.jobs.'+job_name_instance.key)==null}"
+								th:text="${job_name_instance.key}">job name</td>
+							<td
+								th:unless="${@environment.getProperty('job_name.jobs.'+job_name_instance.key)==null}"
+								th:text="${@environment.getProperty('job_name.jobs.'+job_name_instance.key)}">job
+								name</td>
+							<td><span
+								th:if="${job_name_executions.get(job_name_instance.key)!=null and @xchange3Util.showRelativeTime}"
+								class="timeago"
+								th:title="${@documentController.getIso8601DateFormat(job_name_executions.get(job_name_instance.key).createTime)}"
+								th:text="${job_name_executions.get(job_name_instance.key).createTime}"></span><span
+								th:if="${job_name_executions.get(job_name_instance.key)!=null and !@xchange3Util.showRelativeTime}"
+								th:text="${#calendars.format(job_name_executions.get(job_name_instance.key).createTime,'dd MMM yyyy HH:mm')}"></span></td>
+							<td><span
+								th:if="${job_name_runtimes.get(job_name_instance.key)!=null}"
+								th:text="${job_name_runtimes.get(job_name_instance.key)}"></span></td>
+							<td
+								th:include="base ::
+						job_status (${job_name_executions.get(job_name_instance.key)!=null?job_name_executions.get(job_name_instance.key).status.toString():'UNKNOWN'})">
+							</td>
+							<td>
+								<div class="btn-group" th:if="${job_name_instance.value!=null}">
+									<button type="button"
+										class="btn btn-xs btn-primary dropdown-toggle"
+										data-toggle="dropdown">
+										View <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a
+											th:href="@{'/jobs/'+${job_name_instance.key}+'/'+${job_name_instance.value.id}+'/'+${job_name_executions.get(job_name_instance.key).id}}"
+											href="#"
+											th:text="${#messages.msg('label.job_instances.view_execution')}">View
+												Execution</a></li>
+										<li><a
+											th:href="@{'/jobs/'+${job_name_instance.key}+'/'+${job_name_instance.value.id}}"
+											href="#"
+											th:text="${#messages.msg('label.job_instances.view_all_executions')}">View
+												All Executions</a></li>
+										<li><a th:href="@{'/jobs/'+${job_name_instance.key}}"
+											href="#"
+											th:text="${#messages.msg('label.job_instances.view_instances')}">View
+												Instances</a></li>
+									</ul>
+								</div>
+								<div
+									th:unless="${#strings.startsWith(job_name_instance.key,'processDocument')}"
+									class="btn-group"
+									th:if="${job_name_executions.get(job_name_instance.key)==null or (job_name_executions.get(job_name_instance.key)!=null and job_name_executions.get(job_name_instance.key).status.toString() ne 'STARTED')}">
+									<button type="button"
+										class="btn btn-xs btn-warning dropdown-toggle"
+										data-toggle="dropdown">
+										Start <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li
+											th:unless="${#strings.startsWith(job_name_instance.key,'processFile')}"><a
+											th:href="@{'/jobs/'+${job_name_instance.key}+'/start'}"
+											href="#"
+											th:text="${#messages.msg('label.job_instances.start_restart')}">Start
+												or restart</a></li>
+										<li
+											th:unless="${#strings.startsWith(job_name_instance.key,'processFile')}"><a
+											th:href="@{'/jobs/'+${job_name_instance.key}+'/start'(forceNew=true)}"
+											href="#"
+											th:text="${#messages.msg('label.job_instances.start_force_new')}">Start
+												force new</a></li>
+										<li
+											th:if="${#strings.startsWith(job_name_instance.key,'processFile')}"><a
+											th:href="@{/jobList/__${job_name_instance.key}__}" href="#"
+											th:text="${#messages.msg('label.job_instances.start_selecting')}">Start
+												Selecting File</a></li>
+									</ul>
+								</div> <a class="btn btn-xs btn-danger"
+								th:if="${job_name_instance.value!=null and job_name_executions.get(job_name_instance.key)!=null and job_name_executions.get(job_name_instance.key).status.toString() eq 'STARTED'}"
+								th:href="@{'/jobs/'+${job_name_instance.key}+'/'+${job_name_instance.value.id}+'/'+${job_name_executions.get(job_name_instance.key).id}}+'/stop'"
+								href="#" th:text="${#messages.msg('label.job_instances.stop')}">Stop
+									Exection</a> <a
+								th:unless="${#strings.startsWith(job_name_instance.key,'processDocument')}"
+								class="btn btn-xs btn-info"
+								th:href="@{'/jobs/'+${job_name_instance.key}+'/scheduler'}"
+								href="#"><span class="glyphicon glyphicon-time"></span> <span
+									th:text="${#messages.msg('label.job_instances.scheduler')}">Scheduler</span></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div
+					th:if="${#lists.isEmpty(job_instances) and #lists.isEmpty(job_name_instances)}">
+					<span
+						th:text="${#messages.msg('label.job_instances.warning.isEmpty')}">Warning
+						job instances empty.</span>
+
+				</div>
+				<p th:if="${not #lists.isEmpty(job_instances)}">
+					<a href="#" th:href="@{/jobs}"
+						th:text="${#messages.msg('label.job_instances.other_jobs')}"></a>
+				</p>
+
+				<table class="table" th:if="${not #lists.isEmpty(job_instances)}">
+					<thead>
+						<tr>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.job_name')}">Job
+									Name</span></th>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.last_runtime')}">Last
+									Run Time</span></th>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.last_result')}">Last
+									Result</span></th>
+							<th><span
+								th:text="${#messages.msg('label.job_instances.action')}">Action</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="instance : ${job_instances}">
+							<td
+								th:if="${@environment.getProperty('job_name.jobs.'+instance.jobName)==null}"
+								th:text="${instance.jobName}">job name</td>
+							<td
+								th:unless="${@environment.getProperty('job_name.jobs.'+instance.jobName)==null}"
+								th:text="${@environment.getProperty('job_name.jobs.'+instance.jobName)}">job
+								name</td>
+							<td th:if="${job_executions.get(instance.id)!=null}"><span
+								th:if="${job_executions.get(instance.id)!=null and @xchange3Util.showRelativeTime}"
+								class="timeago"
+								th:title="${@documentController.getIso8601DateFormat(job_executions.get(instance.id).createTime)}"
+								th:text="${job_executions.get(instance.id).createTime}"></span><span
+								th:if="${job_executions.get(instance.id)!=null and !@xchange3Util.showRelativeTime}"
+								th:text="${#calendars.format(job_executions.get(instance.id).createTime,'dd MMM yyyy HH:mm')}"></span>
+							</td>
+							<td
+								th:include="base :: job_status (${job_executions.get(instance.id)!=null?job_executions.get(instance.id).status.toString():'UNKNOWN'})">status</td>
+							<td>
+								<div class="btn-group">
+									<button type="button"
+										class="btn btn-xs btn-primary dropdown-toggle"
+										data-toggle="dropdown">
+										View <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a
+											th:href="@{'/jobs/'+${instance.jobName}+'/'+${instance.id}+'/'+${job_executions.get(instance.id).id}}"
+											href="#"
+											th:text="${#messages.msg('label.job_instances.view_execution')}">View
+												Execution</a></li>
+										<li><a
+											th:href="@{'/jobs/'+${instance.jobName}+'/'+${instance.id}}"
+											href="#"
+											th:text="${#messages.msg('label.job_instances.view_all_executions')}">View
+												All Executions</a></li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<ul class="pager" th:if="${not #lists.isEmpty(job_instances)}">
+					<li><a
+						th:href="@{'/jobs/'+${job_name}(start=${start-10 lt 0 ? 0 : start-10})}"
+						href="#">Newer</a></li>
+					<li><a
+						th:href="@{'/jobs/'+${job_name}(start=${job_instances.size() eq 10 ? start+10 : start})}"
+						href="#">Older</a></li>
+				</ul>
+			</section>
+		</div>
+	</div>
+	<div th:replace="layout-dashboard :: footer-panel"></div>
+	<div th:replace="layout-dashboard :: shortcut-panel"></div>
+	<div th:replace="base :: scripts"></div>
+	<script type="text/javascript">
+		//<![CDATA[
+		jQuery(document).ready(function() {
+			jQuery("span.timeago").timeago();
+			(window.formDocumentReady || function() {
+			})();
+			setTimeout(function() {
+				$(".alert").alert('close');
+			}, 8000);
+		});
+		$("ul#menu-list li#administration-list").addClass("active");
+		//]]>
+	</script>
+
+	<div th:replace="base :: script-google-analytics"></div>
+</body>
+</html>

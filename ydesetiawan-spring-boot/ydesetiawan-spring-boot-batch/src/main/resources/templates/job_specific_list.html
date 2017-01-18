@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title
+	th:text="${@environment.getProperty('application_name')} + ' - List Files'">List
+	Files</title>
+<link rel="stylesheet" th:if="${#themes.code('name')==''}"
+	th:href="@{'/css/default-master.css'}" />
+<link rel="stylesheet" th:if="${#themes.code('name')!=''}"
+	th:href="@{'/css/' + ${#themes.code('name')} + '-master.css'}" />
+</head>
+<body
+	th:class="${#themes.code('skin')+(@xchange3Util.fetchCookie(#httpServletRequest.cookies, 'minifyMenu')!=null?' minified':'')}"
+	th:classappend="${#authentication.principal.perspective}">
+	<div th:replace="layout-dashboard :: header-panel"></div>
+	<div th:replace="layout-dashboard :: left-panel"></div>
+	<div id="main" role="main">
+		<div th:replace="layout-dashboard :: default-ribbon"></div>
+
+		<div id="content">
+			<section>
+				<h1>List Files</h1>
+				<div th:if="${alertSuccess}" class="alert alert-success fade in">
+					<a href="#" class="close" data-dismiss="alert">&times;</a><span
+						th:text="${alertSuccess}">Success message.</span>
+				</div>
+				<div th:if="${alertWarning}" class="alert alert-warning fade in">
+					<a href="#" class="close" data-dismiss="alert">&times;</a><span
+						th:text="${alertWarning}">Warning message.</span>
+				</div>
+
+				<div th:if="${#lists.isEmpty(metaMap)}">
+					<span th:text="${#messages.msg('label.upload.warning.isEmpty')}">Warning
+						files is empty.</span>
+				</div>
+				<p class="btn-group btn-group-xs">
+					<span
+						th:attr="data-url=@{/jobs/__${jobName}__/start/files(path=${path})}"
+						class="btn btn-primary start_jobs"><span
+						class="glyphicon glyphicon-time"></span> <span
+						th:text="${#messages.msg('label.button.startJob')}">Start
+							Job</span></span> <span class="btn btn-default clear_selection"><span
+						class="glyphicon glyphicon-remove-circle"></span> <span
+						th:text="${#messages.msg('label.documents.clearSelection')}">Clear
+							Selection</span></span>
+				</p>
+				<table class="table" th:if="${not #lists.isEmpty(metaMap)}">
+					<thead>
+						<tr>
+							<th class="col-md-1"><input class="select_file_all"
+								type="checkbox" /></th>
+							<th class="col-md-11"
+								th:utext="${#messages.msg('label.upload.fileName')}">File
+								Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="meta : ${metaMap}" th:attr="data-uuid=${meta.key}">
+							<td class="col-md-1"><input class="select_file_item"
+								type="checkbox" /></td>
+							<td class="col-md-11" th:utext="${meta.value}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	</div>
+
+	<div th:replace="layout-dashboard :: footer-panel"></div>
+	<div th:replace="layout-dashboard :: shortcut-panel"></div>
+	<div th:replace="base :: scripts"></div>
+	<script th:src="@{/js/asyx/job.js}" src="../static/js/asyx/job.js"></script>
+	<script type="text/javascript">
+		//<![CDATA[
+		jQuery(document).ready(function() {
+			// FIXME make dropzone work
+			jQuery("span.timeago").timeago();
+			setTimeout(function() {
+				$(".alert").alert('close');
+			}, 8000);
+		});
+		$("ul#menu-list li#administration-list").addClass("active");
+		//]]>
+	</script>
+
+	<div th:replace="base :: script-google-analytics"></div>
+</body>
+</html>

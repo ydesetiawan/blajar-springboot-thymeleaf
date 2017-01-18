@@ -16,5 +16,6 @@
     <module>ydesetiawan-spring-security-hibernate</module>
     <module>ydesetiawan-spring-boot-thymeleaf</module>
     <module>ydesetiawan-spring-security-login-ldap</module>
+    <module>ydesetiawan-spring-boot-batch</module>
   </modules>
 </project>
