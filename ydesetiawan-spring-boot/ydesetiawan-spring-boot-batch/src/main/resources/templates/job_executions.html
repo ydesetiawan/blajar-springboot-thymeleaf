@@ -1,100 +1,99 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title
-	th:text="${@environment.getProperty('application_name')} + ' - ' + ${#messages.msg('label.job_executions.title')}">Job
-	Executions</title>
-<link rel="stylesheet" th:if="${#themes.code('name')==''}"
-	th:href="@{'/css/default-master.css'}" />
-<link rel="stylesheet" th:if="${#themes.code('name')!=''}"
-	th:href="@{'/css/' + ${#themes.code('name')} + '-master.css'}" />
+<title th:text="${@environment.getProperty('application_name')}"></title>
 </head>
-<body
-	th:class="${#themes.code('skin')+(@xchange3Util.fetchCookie(#httpServletRequest.cookies, 'minifyMenu')!=null?' minified':'')}"
-	th:classappend="${#authentication.principal.perspective}">
-	<div th:replace="layout-dashboard :: header-panel"></div>
-	<div th:replace="layout-dashboard :: left-panel"></div>
-	<div id="main" role="main">
-		<div th:replace="layout-dashboard :: default-ribbon"></div>
+<body>
+	<div th:replace="base::css-core"></div>
+	<div id="wrapper">
+		<div th:replace="layout-dashboard :: navbar"></div>
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 th:text="${#messages.msg('label.job_executions.title')}"
+						class="page-header">Job Executions</h1>
+				</div>
+				<div class="col-lg-12">
+					<div id="content">
+						<section>
+							<div th:if="${alertSuccess}" class="alert alert-success fade in">
+								<a href="#" class="close" data-dismiss="alert">&times;</a><span
+									th:text="${alertSuccess}">Success message.</span>
+							</div>
+							<div th:if="${alertWarning}" class="alert alert-warning fade in">
+								<a href="#" class="close" data-dismiss="alert">&times;</a><span
+									th:text="${alertWarning}">Warning message.</span>
+							</div>
+							<div th:if="${#lists.isEmpty(job_executions)}"
+								class="alert alert-warning">
+								<span
+									th:text="${#messages.msg('label.job_executions.empty_alert')}">No
+									job executions found.</span>
+							</div>
+							<table class="table"
+								th:if="${not #lists.isEmpty(job_executions)}">
+								<thead>
+									<tr>
+										<th><span
+											th:text="${#messages.msg('label.job_executions.job_name')}">Job
+												Name</span></th>
 
-		<div id="content">
-			<section>
-				<h1 th:text="${#messages.msg('label.job_executions.title')}">Job
-					Executions</h1>
-				<div th:if="${alertSuccess}" class="alert alert-success fade in">
-					<a href="#" class="close" data-dismiss="alert">&times;</a><span
-						th:text="${alertSuccess}">Success message.</span>
+										<th><span
+											th:text="${#messages.msg('label.job_executions.start_time')}">Start
+												Time</span></th>
+										<th><span
+											th:text="${#messages.msg('label.job_executions.end_time')}">End
+												Time</span></th>
+										<th><span
+											th:text="${#messages.msg('label.job_executions.status')}">
+												Status</span></th>
+										<th><span
+											th:text="${#messages.msg('label.job_executions.action')}">
+												Action</span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="execution : ${job_executions}">
+										<td
+											th:if="${@environment.getProperty('job_name.jobs.'+execution.jobInstance.jobName)==null}"
+											th:text="${execution.jobInstance.jobName}">Job Name</td>
+										<td
+											th:unless="${@environment.getProperty('job_name.jobs.'+execution.jobInstance.jobName)==null}"
+											th:text="${@environment.getProperty('job_name.jobs.'+execution.jobInstance.jobName)}">job
+											name</td>
+										<td><span th:if="${execution.startTime!=null}"
+											class="timeago"
+											th:title="${@jobController.getIso8601DateFormat(execution.startTime)}"
+											th:text="${execution.startTime}"></span><span
+											th:if="${execution.startTime!=null}"
+											th:text="${#calendars.format(execution.startTime,'dd MMM yyyy HH:mm')}"></span></td>
+										<td><span th:if="${execution.endTime!=null}"
+											class="timeago"
+											th:title="${@jobController.getIso8601DateFormat(execution.endTime)}"
+											th:text="${execution.endTime}"></span><span
+											th:if="${execution.endTime!=null}"
+											th:text="${#calendars.format(execution.endTime,'dd MMM yyyy HH:mm')}"></span></td>
+										<td
+											th:include="base :: job_status (${execution.status.toString()})">status</td>
+										<td><a class="btn btn-xs btn-primary"
+											th:href="@{'/jobs/'+${execution.jobInstance.jobName}+'/'+${execution.jobInstance.id}+'/'+${execution.id}}"
+											href="#"
+											th:text="${#messages.msg('label.job_executions.view_execution')}">View
+												Execution</a></td>
+									</tr>
+								</tbody>
+							</table>
+						</section>
+					</div>
 				</div>
-				<div th:if="${alertWarning}" class="alert alert-warning fade in">
-					<a href="#" class="close" data-dismiss="alert">&times;</a><span
-						th:text="${alertWarning}">Warning message.</span>
-				</div>
-				<div th:if="${#lists.isEmpty(job_executions)}"
-					class="alert alert-warning">
-					<span
-						th:text="${#messages.msg('label.job_executions.empty_alert')}">No
-						job executions found.</span>
-				</div>
-				<table class="table" th:if="${not #lists.isEmpty(job_executions)}">
-					<thead>
-						<tr>
-							<th><span
-								th:text="${#messages.msg('label.job_executions.job_name')}">Job
-									Name</span></th>
-
-							<th><span
-								th:text="${#messages.msg('label.job_executions.start_time')}">Start
-									Time</span></th>
-							<th><span
-								th:text="${#messages.msg('label.job_executions.end_time')}">End
-									Time</span></th>
-							<th><span
-								th:text="${#messages.msg('label.job_executions.status')}">
-									Status</span></th>
-							<th><span
-								th:text="${#messages.msg('label.job_executions.action')}">
-									Action</span></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="execution : ${job_executions}">
-							<td
-								th:if="${@environment.getProperty('job_name.jobs.'+execution.jobInstance.jobName)==null}"
-								th:text="${execution.jobInstance.jobName}">Job Name</td>
-							<td
-								th:unless="${@environment.getProperty('job_name.jobs.'+execution.jobInstance.jobName)==null}"
-								th:text="${@environment.getProperty('job_name.jobs.'+execution.jobInstance.jobName)}">job
-								name</td>
-							<td><span
-								th:if="${execution.startTime!=null and @xchange3Util.showRelativeTime}"
-								class="timeago"
-								th:title="${@documentController.getIso8601DateFormat(execution.startTime)}"
-								th:text="${execution.startTime}"></span><span
-								th:if="${execution.startTime!=null and !@xchange3Util.showRelativeTime}"
-								th:text="${#calendars.format(execution.startTime,'dd MMM yyyy HH:mm')}"></span></td>
-							<td><span
-								th:if="${execution.endTime!=null and @xchange3Util.showRelativeTime}"
-								class="timeago"
-								th:title="${@documentController.getIso8601DateFormat(execution.endTime)}"
-								th:text="${execution.endTime}"></span><span
-								th:if="${execution.endTime!=null and !@xchange3Util.showRelativeTime}"
-								th:text="${#calendars.format(execution.endTime,'dd MMM yyyy HH:mm')}"></span></td>
-							<td
-								th:include="base :: job_status (${execution.status.toString()})">status</td>
-							<td><a class="btn btn-xs btn-primary"
-								th:href="@{'/jobs/'+${execution.jobInstance.jobName}+'/'+${execution.jobInstance.id}+'/'+${execution.id}}"
-								href="#"
-								th:text="${#messages.msg('label.job_executions.view_execution')}">View
-									Execution</a></td>
-						</tr>
-					</tbody>
-				</table>
-			</section>
+			</div>
 		</div>
+
+		<!-- /#page-wrapper -->
 	</div>
-	<div th:replace="layout-dashboard :: footer-panel"></div>
-	<div th:replace="layout-dashboard :: shortcut-panel"></div>
-	<div th:replace="base :: scripts"></div>
+	<!-- /#wrapper -->
+	<div th:replace="base::js-core"></div>
 	<script type="text/javascript">
 		//<![CDATA[
 		jQuery(document).ready(function() {
@@ -105,10 +104,7 @@
 				$(".alert").alert('close');
 			}, 8000);
 		});
-		$("ul#menu-list li#administration-list").addClass("active");
 		//]]>
 	</script>
-
-	<div th:replace="base :: script-google-analytics"></div>
 </body>
 </html>

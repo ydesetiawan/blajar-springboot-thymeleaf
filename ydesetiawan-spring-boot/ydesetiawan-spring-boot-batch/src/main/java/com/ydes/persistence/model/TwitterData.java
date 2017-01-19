@@ -20,72 +20,84 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "twitter_data")
 public class TwitterData implements Serializable {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -2435918692524217525L;
+    private static final long serialVersionUID = -2435918692524217525L;
 
-	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	@Column(length = 36, nullable = false, updatable = false)
-	private String uuid;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(length = 36, nullable = false, updatable = false)
+    private String uuid;
 
-	@Column(name = "profile_name", length = 100, nullable = false)
-	private String profileName;
+    @Column(name = "profile_name", length = 100, nullable = false)
+    private String profileName;
 
-	@Column(name = "profile_img_url", length = 250, nullable = false)
-	private String profileImgUrl;
+    @Column(name = "profile_img_url", length = 250, nullable = false)
+    private String profileImgUrl;
 
-	@Column(name = "posting_date", nullable = false)
-	private Date postingDate;
+    @Column(name = "posting_date", nullable = false)
+    private Date postingDate;
 
-	@Column(name = "text", length = 250, nullable = false)
-	private String text;
+    @Column(name = "text", length = 250, nullable = false)
+    private String text;
 
-	public TwitterData() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public TwitterData() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public String getUuid() {
-		return uuid;
-	}
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	public String getProfileName() {
-		return profileName;
-	}
+    public String getProfileName() {
+        return profileName;
+    }
 
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
-	}
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
 
-	public String getProfileImgUrl() {
-		return profileImgUrl;
-	}
+    public String getProfileImgUrl() {
+        return profileImgUrl;
+    }
 
-	public void setProfileImgUrl(String profileImgUrl) {
-		this.profileImgUrl = profileImgUrl;
-	}
+    public void setProfileImgUrl(String profileImgUrl) {
+        this.profileImgUrl = profileImgUrl;
+    }
 
-	public Date getPostingDate() {
-		return postingDate;
-	}
+    public Date getPostingDate() {
+        return postingDate;
+    }
 
-	public void setPostingDate(Date postingDate) {
-		this.postingDate = postingDate;
-	}
+    public void setPostingDate(Date postingDate) {
+        this.postingDate = postingDate;
+    }
 
-	public String getText() {
-		return text;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "TwitterData [uuid=" + uuid + ", profileName=" + profileName
+                + ", profileImgUrl=" + profileImgUrl + ", postingDate="
+                + postingDate + ", text=" + text + "]";
+    }
 
 }

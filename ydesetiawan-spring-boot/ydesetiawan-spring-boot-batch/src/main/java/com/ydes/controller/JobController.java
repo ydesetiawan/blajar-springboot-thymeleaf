@@ -1,11 +1,14 @@
 package com.ydes.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -21,7 +24,6 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.triggers.CronTriggerImpl;
-import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.explore.JobExplorer;
@@ -38,7 +40,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ydes.batch.JobLauncherDetails;
@@ -63,7 +64,6 @@ public class JobController {
     private static final String ALERT_SUCCESS = "alertSuccess";
     private static final String JOB_INSTANCES = "job_instances";
     private static final String JOB_EXECUTIONS = "job_executions";
-    private static final String JOBNAME = "InboundInvoiceBikWebdavJob";
 
     private static Logger log = Logger.getLogger(JobController.class);
 
@@ -80,6 +80,13 @@ public class JobController {
         return createJobDetail(jobName, false);
     }
 
+    public String getIso8601DateFormat(Date date) {
+        TimeZone timeZone = TimeZone.getTimeZone("UTC");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        dateFormat.setTimeZone(timeZone);
+        return dateFormat.format(date);
+    }
+
     private JobDetailImpl createJobDetail(String jobName, boolean forceNew) {
         JobKey jobKey = new JobKey(UUID.randomUUID().toString(), jobName);
         JobDetailImpl jobDetail = new JobDetailImpl();
@@ -87,16 +94,6 @@ public class JobController {
         jobDetail.setJobClass(JobLauncherDetails.class);
         jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_NAME, jobName);
         jobDetail.getJobDataMap().put(JobLauncherDetails.FORCE_NEW, forceNew);
-        return jobDetail;
-    }
-
-    private JobDetailImpl createJobDetail(String jobName, boolean forceNew,
-            String selectedFiles, String jobFilePath) {
-        JobDetailImpl jobDetail = createJobDetail(jobName, forceNew);
-        jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_FILE_PATH,
-                jobFilePath);
-        jobDetail.getJobDataMap().put(JobLauncherDetails.JOB_SELECTED_FILES,
-                selectedFiles);
         return jobDetail;
     }
 
@@ -379,22 +376,6 @@ public class JobController {
             boolean forceNewBool = Boolean.parseBoolean(forceNew);
             JobDetailImpl jobDetail;
             jobDetail = createJobDetail(jobName, forceNewBool);
-            if (JOBNAME.equals(jobName)) {
-                List<JobInstance> jins = jobExplorer.getJobInstances(jobName,
-                        0, 1);
-                JobInstance jin = jins.get(0);
-                List<JobExecution> jexs = jobExplorer.getJobExecutions(jin);
-                if (!jexs.isEmpty()) {
-                    JobExecution jex = jexs.get(0);
-                    if (jex != null) {
-                        if (jex.getStatus() == BatchStatus.STARTED) {
-                            redirect.addFlashAttribute(ALERT_WARNING, JOB
-                                    + jobName + "' still running");
-                            return REDIRECT_JOBS2;
-                        }
-                    }
-                }
-            }
             // start in 5 seconds
             long startTime = System.currentTimeMillis() + 5 * 1000L;
             Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDetail)
@@ -408,38 +389,6 @@ public class JobController {
         }
 
         return REDIRECT_JOBS2;
-    }
-
-    @ResponseBody
-    @RequestMapping("/jobs/{jobName}/start/files")
-    public String startJobFiles(
-            @PathVariable String jobName,
-            @RequestParam(required = false, defaultValue = "false") String forceNew,
-            @RequestParam(required = false, defaultValue = "") String path,
-            @RequestParam(value = "selectedFiles[]", required = false) String selectedFiles)
-            throws SchedulerException {
-        try {
-            JobDetailImpl jobDetail;
-            if (selectedFiles != null && !selectedFiles.isEmpty()) {
-                jobDetail = createJobDetail(jobName, true, selectedFiles, path);
-            } else {
-                return "/jobList/"
-                        + jobName
-                        + "/view?message=You have to selected files to start job";
-            }
-            // start in 5 seconds
-            long startTime = System.currentTimeMillis() + 5 * 1000L;
-            Trigger trigger = TriggerBuilder.newTrigger().forJob(jobDetail)
-                    .withIdentity(UUID.randomUUID().toString(), jobName)
-                    .startAt(new Date(startTime)).build();
-            schedulers.getScheduler().scheduleJob(jobDetail, trigger);
-        } catch (Exception e) {
-            log.debug(e);
-            return "/jobList/" + jobName + "/view?message=Trigger for job '"
-                    + jobName + "' could not be started: " + e.getMessage();
-        }
-
-        return "/jobs";
     }
 
     @RequestMapping("/jobs/{jobName}/{instanceId}/{executionId}/stop")

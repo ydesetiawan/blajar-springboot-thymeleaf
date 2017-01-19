@@ -16,27 +16,28 @@ import com.ydes.persistence.model.TwitterData;
 @Configuration
 public class TwitterDataBatchConfig {
 
-	@Autowired
-	private JobBuilderFactory jobs;
+    @Autowired
+    private JobBuilderFactory jobBuilderFactory;
 
-	@Autowired
-	private StepBuilderFactory steps;
+    @Autowired
+    private StepBuilderFactory stepBuilderFactory;
 
-	@Bean
-	public Job getTwitterDataJob(Step getTwitterDataStep) {
-		return jobs.get("getTwitterDataJob").start(getTwitterDataStep).build();
-	}
+    @Bean
+    public Job getTwitterDataJob(Step getTwitterDataStep) {
+        return jobBuilderFactory.get("getTwitterDataJob").preventRestart()
+                .incrementer(new TimestampIncrementer())
+                .flow(getTwitterDataStep).end().build();
+    }
 
-	@Bean
-	protected Step getTwitterDataStep(
-			ItemReader<TwitterData> twitterDataReader,
-			ItemProcessor<TwitterData, TwitterData> twitterDataProcessor,
-			ItemWriter<TwitterData> twitterDataWriter) {
-		return steps.get("getTwitterDataStep")
-				.<TwitterData, TwitterData> chunk(10)
-				.reader(twitterDataReader)
-				.processor(twitterDataProcessor)
-				.writer(twitterDataWriter).build();
-	}
+    @Bean
+    protected Step getTwitterDataStep(
+            ItemReader<TwitterData> twitterDataReader,
+            ItemProcessor<TwitterData, TwitterData> twitterDataProcessor,
+            ItemWriter<TwitterData> twitterDataWriter) {
+        return stepBuilderFactory.get("getTwitterDataStep")
+                .<TwitterData, TwitterData> chunk(10).reader(twitterDataReader)
+                .processor(twitterDataProcessor).writer(twitterDataWriter)
+                .build();
+    }
 
 }

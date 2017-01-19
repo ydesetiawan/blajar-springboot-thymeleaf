@@ -1,182 +1,182 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title
-	th:text="${@environment.getProperty('application_name')} + ' - ' + ${#messages.msg('label.job_scheduler_trigger.title')}">Job
-	Scheduler Trigger</title>
-<link rel="stylesheet" th:if="${#themes.code('name')==''}"
-	th:href="@{'/css/default-master.css'}" />
-<link rel="stylesheet" th:if="${#themes.code('name')!=''}"
-	th:href="@{'/css/' + ${#themes.code('name')} + '-master.css'}" />
+<title th:text="${@environment.getProperty('application_name')}"></title>
 </head>
-<body
-	th:class="${#themes.code('skin')+(@xchange3Util.fetchCookie(#httpServletRequest.cookies, 'minifyMenu')!=null?' minified':'')}"
-	th:classappend="${#authentication.principal.perspective}">
-	<div th:replace="layout-dashboard :: header-panel"></div>
-	<div th:replace="layout-dashboard :: left-panel"></div>
-	<div id="main" role="main">
-		<div th:replace="layout-dashboard :: default-ribbon"></div>
-
-		<div id="content">
-			<section>
-				<h1 th:text="${#messages.msg('label.job_scheduler_trigger.title')}">Job
-					Scheduler Trigger</h1>
-				<div th:if="${alertSuccess}" class="alert alert-success fade in">
-					<a href="#" class="close" data-dismiss="alert">&times;</a><span
-						th:text="${alertSuccess}">Success message.</span>
+<body>
+	<div th:replace="base::css-core"></div>
+	<div id="wrapper">
+		<div th:replace="layout-dashboard :: navbar"></div>
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 th:text="${#messages.msg('label.job_scheduler_trigger.title')}"
+						class="page-header">Job Scheduler Trigger</h1>
 				</div>
-				<div th:if="${alertWarning}" class="alert alert-warning fade in">
-					<a href="#" class="close" data-dismiss="alert">&times;</a><span
-						th:text="${alertWarning}">Warning message.</span>
-				</div>
+				<div class="col-lg-12">
+					<div id="content">
+						<section>
+							<div th:if="${alertSuccess}" class="alert alert-success fade in">
+								<a href="#" class="close" data-dismiss="alert">&times;</a><span
+									th:text="${alertSuccess}">Success message.</span>
+							</div>
+							<div th:if="${alertWarning}" class="alert alert-warning fade in">
+								<a href="#" class="close" data-dismiss="alert">&times;</a><span
+									th:text="${alertWarning}">Warning message.</span>
+							</div>
 
-				<p>
-					<a href="#" th:href="@{'/jobs/' + ${jobName} + '/scheduler'}"
-						th:text="${#messages.msg('label.job_scheduler.other_triggers')}"></a>
-				</p>
-				<table
-					th:if="${job_trigger!=null and action!='new' and action!='edit'}"
-					class="table">
-					<thead>
-						<tr>
-							<th th:text="${#messages.msg('label.key')}">Key</th>
-							<th th:text="${#messages.msg('label.value')}">Value</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><span
-								th:text="${#messages.msg('label.job_scheduler.trigger_job_name')}">Job
-									Name</span></td>
-							<td><span
-								th:if="${job_trigger.class.name=='org.quartz.impl.triggers.CronTriggerImpl'}"
-								class="label label-success">Cron</span> <span
-								th:if="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
-								th:text="${job_trigger.group}">job name</span> <span
-								th:unless="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
-								th:text="${@environment.getProperty('job_name.jobs.'+job_trigger.group)}">job
-									name</span></td>
-						</tr>
-						<tr>
-							<td><span
-								th:text="${#messages.msg('label.job_scheduler.trigger_calendar_name')}">Calendar
-									Name</span></td>
-							<td th:text="${job_trigger.calendarName}">calendar name</td>
-						</tr>
-						<tr>
-							<td><span
-								th:text="${#messages.msg('label.job_scheduler.trigger_cron_expression')}">Cron
-									Expression</span></td>
-							<td th:text="${job_trigger.cronExpression}">cronExpression</td>
-						</tr>
-						<tr>
-							<td><span
-								th:text="${#messages.msg('label.job_scheduler.trigger_next_runtime')}">Next
-									Run Time</span></td>
-							<td th:text="${job_trigger.nextFireTime}">next runtime</td>
-						</tr>
-						<tr>
-							<td><span
-								th:text="${#messages.msg('label.job_scheduler.trigger_state')}">State</span></td>
-							<td
-								th:include="base :: trigger_state (${job_trigger_state!=null?job_trigger_state.toString():'UNKNOWN'})">state</td>
-						</tr>
-					</tbody>
-				</table>
-				<div
-					th:if="${job_trigger!=null and action!='new' and action!='edit'}">
-					<a class="btn btn-xs btn-success"
-						th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/enable'}"><span
-						class="glyphicon glyphicon-play"></span> <span
-						th:text="${#messages.msg('label.job_scheduler.enable')}">Enable</span></a>
-					<a class="btn btn-xs btn-warning"
-						th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/disable'}"><span
-						class="glyphicon glyphicon-pause"></span> <span
-						th:text="${#messages.msg('label.job_scheduler.disable')}">Disable</span></a>
-					<a class="btn btn-xs btn-warning"
-						th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/edit'}"><span
-						class="glyphicon glyphicon-edit"></span> <span
-						th:text="${#messages.msg('label.job_scheduler.edit')}">Edit</span></a>
-					<a class="btn btn-xs btn-danger"
-						th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/delete'}"><span
-						class="glyphicon glyphicon-trash"></span> <span
-						th:text="${#messages.msg('label.job_scheduler.delete')}">Delete</span></a>
-				</div>
+							<p>
+								<a href="#" th:href="@{'/jobs/' + ${jobName} + '/scheduler'}"
+									th:text="${#messages.msg('label.job_scheduler.other_triggers')}"></a>
+							</p>
+							<table
+								th:if="${job_trigger!=null and action!='new' and action!='edit'}"
+								class="table">
+								<thead>
+									<tr>
+										<th th:text="${#messages.msg('label.key')}">Key</th>
+										<th th:text="${#messages.msg('label.value')}">Value</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><span
+											th:text="${#messages.msg('label.job_scheduler.trigger_job_name')}">Job
+												Name</span></td>
+										<td><span
+											th:if="${job_trigger.class.name=='org.quartz.impl.triggers.CronTriggerImpl'}"
+											class="label label-success">Cron</span> <span
+											th:if="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
+											th:text="${job_trigger.group}">job name</span> <span
+											th:unless="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
+											th:text="${@environment.getProperty('job_name.jobs.'+job_trigger.group)}">job
+												name</span></td>
+									</tr>
+									<tr>
+										<td><span
+											th:text="${#messages.msg('label.job_scheduler.trigger_calendar_name')}">Calendar
+												Name</span></td>
+										<td th:text="${job_trigger.calendarName}">calendar name</td>
+									</tr>
+									<tr>
+										<td><span
+											th:text="${#messages.msg('label.job_scheduler.trigger_cron_expression')}">Cron
+												Expression</span></td>
+										<td th:text="${job_trigger.cronExpression}">cronExpression</td>
+									</tr>
+									<tr>
+										<td><span
+											th:text="${#messages.msg('label.job_scheduler.trigger_next_runtime')}">Next
+												Run Time</span></td>
+										<td th:text="${job_trigger.nextFireTime}">next runtime</td>
+									</tr>
+									<tr>
+										<td><span
+											th:text="${#messages.msg('label.job_scheduler.trigger_state')}">State</span></td>
+										<td
+											th:include="base :: trigger_state (${job_trigger_state!=null?job_trigger_state.toString():'UNKNOWN'})">state</td>
+									</tr>
+								</tbody>
+							</table>
+							<div
+								th:if="${job_trigger!=null and action!='new' and action!='edit'}">
+								<a class="btn btn-xs btn-success"
+									th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/enable'}"><span
+									class="glyphicon glyphicon-play"></span> <span
+									th:text="${#messages.msg('label.job_scheduler.enable')}">Enable</span></a>
+								<a class="btn btn-xs btn-warning"
+									th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/disable'}"><span
+									class="glyphicon glyphicon-pause"></span> <span
+									th:text="${#messages.msg('label.job_scheduler.disable')}">Disable</span></a>
+								<a class="btn btn-xs btn-warning"
+									th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/edit'}"><span
+									class="glyphicon glyphicon-edit"></span> <span
+									th:text="${#messages.msg('label.job_scheduler.edit')}">Edit</span></a>
+								<a class="btn btn-xs btn-danger"
+									th:href="@{'/jobs/'+${jobName}+'/scheduler/'+${job_trigger.name}+'/delete'}"><span
+									class="glyphicon glyphicon-trash"></span> <span
+									th:text="${#messages.msg('label.job_scheduler.delete')}">Delete</span></a>
+							</div>
 
-				<form
-					th:if="${job_trigger!=null and (action=='new' or action=='edit')}"
-					id="form" action="#"
-					th:with="url=(${action=='new'} ? 'scheduler/add' : 'scheduler/' + ${triggerName} + '/edit')"
-					th:action="@{'/jobs/'+${jobName}+'/'+${url}}"
-					th:object="${job_trigger}" method="POST">
-					<div th:if="${result!=null AND result.hasErrors()}"
-						class="alert alert-warning fade in">
-						<ul>
-							<li th:each="err : ${result.allErrors}"
-								th:text="${err.defaultMessage}">Input is incorrect</li>
-						</ul>
+							<form
+								th:if="${job_trigger!=null and (action=='new' or action=='edit')}"
+								id="form" action="#"
+								th:with="url=(${action=='new'} ? 'scheduler/add' : 'scheduler/' + ${triggerName} + '/edit')"
+								th:action="@{'/jobs/'+${jobName}+'/'+${url}}"
+								th:object="${job_trigger}" method="POST">
+								<div th:if="${result!=null AND result.hasErrors()}"
+									class="alert alert-warning fade in">
+									<ul>
+										<li th:each="err : ${result.allErrors}"
+											th:text="${err.defaultMessage}">Input is incorrect</li>
+									</ul>
+								</div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th th:text="${#messages.msg('label.key')}">Key</th>
+											<th th:text="${#messages.msg('label.value')}">Value</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><span
+												th:text="${#messages.msg('label.job_scheduler.trigger_job_name')}">Job
+													Name</span></td>
+											<td><span
+												th:if="${job_trigger.class.name=='org.quartz.impl.triggers.CronTriggerImpl'}"
+												class="label label-success">Cron</span> <span
+												th:if="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
+												th:text="${job_trigger.group}">job name</span> <span
+												th:unless="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
+												th:text="${@environment.getProperty('job_name.jobs.'+job_trigger.group)}">job
+													name</span></td>
+										</tr>
+										<tr>
+											<td><span
+												th:text="${#messages.msg('label.job_scheduler.trigger_calendar_name')}">Calendar
+													Name</span></td>
+											<td><select class="form-control"
+												th:field="*{calendarName}">
+													<option th:value="''">none</option>
+													<option th:each="name : ${calendar_names}"
+														th:value="${name}" th:text="${name}">option</option>
+											</select></td>
+										</tr>
+										<tr>
+											<td><span
+												th:text="${#messages.msg('label.job_scheduler.trigger_cron_expression')}">Cron
+													Expression</span></td>
+											<td><input type="text" th:field="*{cronExpression}"
+												class="form-control" /></td>
+										</tr>
+									</tbody>
+								</table>
+								<div>
+									<button class="btn btn-xs btn-success" type="submit"
+										name="action" value="save">
+										<span class="glyphicon glyphicon-floppy-save"></span> <span
+											th:text="${#messages.msg('label.job_scheduler.save')}">Save</span>
+									</button>
+									<button class="btn btn-xs btn-danger" type="reset">
+										<span class="glyphicon glyphicon-floppy-remove"></span> <span
+											th:text="${#messages.msg('label.job_scheduler.reset')}">Reset</span>
+									</button>
+								</div>
+								<input type="hidden" th:name="${_csrf.parameterName}"
+									th:value="${_csrf.token}" />
+							</form>
+						</section>
 					</div>
-					<table class="table">
-						<thead>
-							<tr>
-								<th th:text="${#messages.msg('label.key')}">Key</th>
-								<th th:text="${#messages.msg('label.value')}">Value</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><span
-									th:text="${#messages.msg('label.job_scheduler.trigger_job_name')}">Job
-										Name</span></td>
-								<td><span
-									th:if="${job_trigger.class.name=='org.quartz.impl.triggers.CronTriggerImpl'}"
-									class="label label-success">Cron</span> <span
-									th:if="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
-									th:text="${job_trigger.group}">job name</span> <span
-									th:unless="${@environment.getProperty('job_name.jobs.'+job_trigger.group)==null}"
-									th:text="${@environment.getProperty('job_name.jobs.'+job_trigger.group)}">job
-										name</span></td>
-							</tr>
-							<tr>
-								<td><span
-									th:text="${#messages.msg('label.job_scheduler.trigger_calendar_name')}">Calendar
-										Name</span></td>
-								<td><select class="form-control" th:field="*{calendarName}">
-										<option th:value="''">none</option>
-										<option th:each="name : ${calendar_names}" th:value="${name}"
-											th:text="${name}">option</option>
-								</select></td>
-							</tr>
-							<tr>
-								<td><span
-									th:text="${#messages.msg('label.job_scheduler.trigger_cron_expression')}">Cron
-										Expression</span></td>
-								<td><input type="text" th:field="*{cronExpression}"
-									class="form-control" /></td>
-							</tr>
-						</tbody>
-					</table>
-					<div>
-						<button class="btn btn-xs btn-success" type="submit" name="action"
-							value="save">
-							<span class="glyphicon glyphicon-floppy-save"></span> <span
-								th:text="${#messages.msg('label.job_scheduler.save')}">Save</span>
-						</button>
-						<button class="btn btn-xs btn-danger" type="reset">
-							<span class="glyphicon glyphicon-floppy-remove"></span> <span
-								th:text="${#messages.msg('label.job_scheduler.reset')}">Reset</span>
-						</button>
-					</div>
-					<input type="hidden" th:name="${_csrf.parameterName}"
-						th:value="${_csrf.token}" />
-				</form>
-			</section>
+				</div>
+			</div>
 		</div>
-	</div>
 
-	<div th:replace="layout-dashboard :: footer-panel"></div>
-	<div th:replace="layout-dashboard :: shortcut-panel"></div>
-	<div th:replace="base :: scripts"></div>
+		<!-- /#page-wrapper -->
+	</div>
+	<!-- /#wrapper -->
+	<div th:replace="base::js-core"></div>
 	<script type="text/javascript">
 		//<![CDATA[
 		jQuery(document).ready(function() {
@@ -187,10 +187,7 @@
 				$(".alert").alert('close');
 			}, 8000);
 		});
-		$("ul#menu-list li#administration-list").addClass("active");
 		//]]>
 	</script>
-
-	<div th:replace="base :: script-google-analytics"></div>
 </body>
 </html>
