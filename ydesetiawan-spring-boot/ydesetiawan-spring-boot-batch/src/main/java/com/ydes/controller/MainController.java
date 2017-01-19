@@ -2,12 +2,18 @@ package com.ydes.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.twitter.api.GeoCode;
+import org.springframework.social.twitter.api.SearchParameters;
+import org.springframework.social.twitter.api.SearchResults;
+import org.springframework.social.twitter.api.Twitter;
+import org.springframework.social.twitter.api.TwitterProfile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +28,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MainController {
 
+	@Autowired
+	private Twitter twitter;
+
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
 
@@ -32,7 +41,27 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/home**", method = RequestMethod.GET)
-	public ModelAndView adminPage() {
+	public ModelAndView home() {
+
+		ModelAndView model = new ModelAndView();
+		model.addObject("title", "Spring Security + Hibernate Example");
+		model.addObject("message", "This page is for ROLE_ADMIN only!");
+		model.setViewName("home");
+
+		return model;
+
+	}
+
+	@RequestMapping(value = "/twitter", method = RequestMethod.GET)
+	public ModelAndView twitter() {
+
+		TwitterProfile profile = twitter.userOperations().getUserProfile(
+				"ydesetiawan94");
+
+		SearchResults results = twitter.searchOperations().search(
+				new SearchParameters("#spring").lang("id")
+						.resultType(SearchParameters.ResultType.RECENT)
+						.count(2).includeEntities(false));
 
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Spring Security + Hibernate Example");

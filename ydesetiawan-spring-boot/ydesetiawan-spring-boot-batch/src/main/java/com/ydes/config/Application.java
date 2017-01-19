@@ -3,6 +3,7 @@ package com.ydes.config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
+import org.springframework.boot.autoconfigure.social.TwitterAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = { "com.ydes" })
 public class Application {
 
-    public static void main(String[] args) throws Throwable {
-        SpringApplication.run(Application.class, args);
-    }
+	public static void main(String[] args) throws Throwable {
+		SpringApplication.run(Application.class, args);
+	}
 
 }
