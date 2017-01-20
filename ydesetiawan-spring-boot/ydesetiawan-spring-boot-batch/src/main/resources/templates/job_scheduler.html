@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <title th:text="${@environment.getProperty('application_name')}"></title>
 </head>
@@ -11,14 +11,12 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 th:text="${#messages.msg('label.job_executions.title')}"
-						class="page-header">Job Executions</h1>
+					<h1 th:text="${#messages.msg('label.job_scheduler.title')}"
+						class="page-header">Job Scheduler</h1>
 				</div>
 				<div class="col-lg-12">
 					<div id="content">
 						<section>
-							<h1 th:text="${#messages.msg('label.job_scheduler.title')}">Job
-								Scheduler</h1>
 							<div th:if="${alertSuccess}" class="alert alert-success fade in">
 								<a href="#" class="close" data-dismiss="alert">&times;</a><span
 									th:text="${alertSuccess}">Success message.</span>

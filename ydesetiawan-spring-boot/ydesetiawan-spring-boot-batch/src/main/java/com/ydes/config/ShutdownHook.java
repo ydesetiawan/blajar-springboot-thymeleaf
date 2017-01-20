@@ -1,4 +1,3 @@
-/* Copyright (C) 2015 ASYX International B.V. All rights reserved. */
 package com.ydes.config;
 
 import org.quartz.Scheduler;
@@ -12,7 +11,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import com.ydes.common.util.AppsLifecycleShutdownEvent;
 
 /**
- * @author frankr
+ * @author edys
  * @version 1.0, May 18, 2015
  * @since
  */

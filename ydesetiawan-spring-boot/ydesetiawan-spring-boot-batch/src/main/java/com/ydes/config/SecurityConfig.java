@@ -17,6 +17,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * @author edys
@@ -47,12 +48,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/home/**")
-                .access("hasRole('ADMIN')").and().formLogin()
-                .loginPage("/login").failureUrl("/login?error")
-                .usernameParameter("username").passwordParameter("password")
-                .and().logout().logoutSuccessUrl("/login?logout").and().csrf()
-                .and().exceptionHandling().accessDeniedPage("/403");
+        http.authorizeRequests()
+                .antMatchers("/data/**", "/dist/**", "/less/**", "/vendor/**")
+                .permitAll();
+
+        http.formLogin().loginPage("/login").defaultSuccessUrl("/")
+                .failureUrl("/login?error=failure").permitAll().and()
+                .authorizeRequests().antMatchers("/login").permitAll();
+        http.logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .permitAll();
+
+        http.authorizeRequests().antMatchers("/", "/**").hasRole("ADMIN");
 
         http.sessionManagement().maximumSessions(maximumSessions)
                 .expiredUrl("/login?error=expired")

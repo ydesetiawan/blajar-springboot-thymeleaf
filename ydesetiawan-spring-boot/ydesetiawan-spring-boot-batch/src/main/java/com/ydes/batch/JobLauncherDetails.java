@@ -36,16 +36,8 @@ public class JobLauncherDetails extends QuartzJobBean {
      */
     public static final String JOB_NAME = "jobName";
     public static final String FORCE_NEW = "forceNew";
-    public static final String JOB_FILE_PATH = "jobFilePath";
-    public static final String JOB_SELECTED_FILES = "jobSelectedFiles";
-    public static final String JOB_BODY = "jobBody";
-    public static final String JOB_ASSOCIATE_DOCSTORES = "jobAssociateDocstores";
-    public static final String JOB_ACTIVE_DOCSTORE = "jobActiveDocstore";
-    public static final String JOB_ACTIVE_USER = "jobActiveUser";
     public static final String JOB_DELEGATOR = "jobDelegatorId";
-    public static final String JOB_SELECTED_ACTION = "jobSelectedAction";
     public static final String JOB_SCHEDULER_ID = "jobSchedulerId";
-    public static final String JOB_PERSPECTIVE = "jobPerspective";
 
     private JobLocator jobLocator;
 

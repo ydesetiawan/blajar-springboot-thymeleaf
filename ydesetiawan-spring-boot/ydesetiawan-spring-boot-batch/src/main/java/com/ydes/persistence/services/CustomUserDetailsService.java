@@ -29,8 +29,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
         com.ydes.persistence.model.User user = userRepository
@@ -53,7 +53,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         Set<GrantedAuthority> setAuths = new HashSet<>();
 
         for (UserRole userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
+            setAuths.add(new SimpleGrantedAuthority("ROLE_"
+                    + userRole.getRole()));
         }
 
         return new ArrayList<>(setAuths);

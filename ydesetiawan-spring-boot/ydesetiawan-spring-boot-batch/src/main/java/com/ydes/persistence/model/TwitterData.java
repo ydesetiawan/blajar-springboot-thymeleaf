@@ -5,11 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author edys
@@ -26,21 +24,20 @@ public class TwitterData implements Serializable {
     private static final long serialVersionUID = -2435918692524217525L;
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(length = 36, nullable = false, updatable = false)
-    private String uuid;
+    @Column(name = "id", nullable = false)
+    private long id;
 
     @Column(name = "profile_name", length = 100, nullable = false)
     private String profileName;
 
-    @Column(name = "profile_img_url", length = 250, nullable = false)
+    @Column(name = "profile_img_url", length = 255, nullable = false)
     private String profileImgUrl;
 
     @Column(name = "posting_date", nullable = false)
     private Date postingDate;
 
-    @Column(name = "text", length = 250, nullable = false)
+    @Lob
+    @Column(name = "text", length = 512)
     private String text;
 
     public TwitterData() {
@@ -48,12 +45,12 @@ public class TwitterData implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
-    public String getUuid() {
-        return uuid;
+    public long getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getProfileName() {
@@ -95,7 +92,7 @@ public class TwitterData implements Serializable {
      */
     @Override
     public String toString() {
-        return "TwitterData [uuid=" + uuid + ", profileName=" + profileName
+        return "TwitterData [uuid=" + id + ", profileName=" + profileName
                 + ", profileImgUrl=" + profileImgUrl + ", postingDate="
                 + postingDate + ", text=" + text + "]";
     }

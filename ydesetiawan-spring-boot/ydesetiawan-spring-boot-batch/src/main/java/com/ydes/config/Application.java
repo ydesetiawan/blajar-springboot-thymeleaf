@@ -3,6 +3,7 @@ package com.ydes.config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
+import org.springframework.boot.autoconfigure.social.TwitterAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -16,7 +17,7 @@ import com.ydes.common.util.AppsLifecycleStartupEvent;
  * @since
  */
 
-@EnableAutoConfiguration(exclude = { FlywayAutoConfiguration.class })
+@EnableAutoConfiguration(exclude = { FlywayAutoConfiguration.class,TwitterAutoConfiguration.class })
 @EnableScheduling
 @EnableAsync
 @ComponentScan(basePackages = { "com.ydes" })

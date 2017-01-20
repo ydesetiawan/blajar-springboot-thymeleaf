@@ -81,7 +81,7 @@ public class FlywayConfig {
      */
     protected String[] isExpandedLocations(String dbName) {
         String[] expandedLocations;
-        List<String> locs = new ArrayList<String>();
+        List<String> locs = new ArrayList<>();
         for (String location : locations) {
             locs.add(location + "_" + dbName);
             locs.add(location + "_default");
