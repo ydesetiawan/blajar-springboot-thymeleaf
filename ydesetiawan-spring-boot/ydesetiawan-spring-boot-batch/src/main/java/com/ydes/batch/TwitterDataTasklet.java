@@ -19,6 +19,7 @@ import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Component;
 
+import com.ydes.config.TwitterSearchParamsConfig;
 import com.ydes.persistence.model.TwitterData;
 import com.ydes.persistence.repository.TwitterDataRepository;
 
@@ -31,49 +32,55 @@ import com.ydes.persistence.repository.TwitterDataRepository;
 @StepScope
 public class TwitterDataTasklet implements Tasklet {
 
-    private Logger log = LoggerFactory.getLogger(TwitterDataTasklet.class);
+	private Logger log = LoggerFactory.getLogger(TwitterDataTasklet.class);
 
-    @Autowired
-    private Twitter twitter;
+	@Autowired
+	private Twitter twitter;
 
-    @Value("#{stepExecution}")
-    private StepExecution stepExecution;
+	@Value("#{stepExecution}")
+	private StepExecution stepExecution;
 
-    @Autowired
-    private TwitterDataRepository twitterDataRepository;
+	@Autowired
+	private TwitterDataRepository twitterDataRepository;
+	@Autowired
+	private TwitterSearchParamsConfig searchParamsConfig;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.
-     * springframework.batch.core.StepContribution,
-     * org.springframework.batch.core.scope.context.ChunkContext)
-     */
-    @Override
-    public RepeatStatus execute(StepContribution contribution,
-            ChunkContext chunkContext) throws Exception {
-        SearchResults results = twitter.searchOperations().search(
-                new SearchParameters("#spring").lang("id")
-                        .resultType(SearchParameters.ResultType.RECENT)
-                        .count(2).includeEntities(false));
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.batch.core.step.tasklet.Tasklet#execute(org.
+	 * springframework.batch.core.StepContribution,
+	 * org.springframework.batch.core.scope.context.ChunkContext)
+	 */
+	@Override
+	public RepeatStatus execute(StepContribution contribution,
+			ChunkContext chunkContext) throws Exception {
 
-        List<Tweet> tweets = results.getTweets();
-        for (Tweet tweet : tweets) {
-            TwitterData td = new TwitterData();
-            td.setId(tweet.getId());
-            td.setProfileName(tweet.getUser().getName());
-            td.setProfileImgUrl(tweet.getUser().getProfileImageUrl());
-            td.setText(tweet.getText());
-            td.setPostingDate(tweet.getCreatedAt());
-            twitterDataRepository.saveAndFlush(td);
-            contribution.incrementWriteCount(1);
-            log.info("storing data : " + td.toString());
-        }
-        contribution.setExitStatus(new ExitStatus(ExitStatus.COMPLETED
-                .getExitCode(),
-                "Process for job getTwitterDataJob started. total data : ["
-                        + contribution.getWriteCount() + "]"));
-        return RepeatStatus.FINISHED;
-    }
+		SearchParameters searchParams = new SearchParameters(
+				searchParamsConfig.getQuery())
+				.resultType(searchParamsConfig.getResultType())
+				.lang(searchParamsConfig.getLang())
+				.locale(searchParamsConfig.getLocale()).includeEntities(false);
 
+		SearchResults results = twitter.searchOperations().search(searchParams);
+
+		List<Tweet> tweets = results.getTweets();
+		for (Tweet tweet : tweets) {
+			contribution.incrementReadCount();
+			TwitterData td = new TwitterData();
+			td.setId(tweet.getId());
+			td.setProfileName(tweet.getUser().getName());
+			td.setProfileImgUrl(tweet.getUser().getProfileImageUrl());
+			td.setText(tweet.getText());
+			td.setPostingDate(tweet.getCreatedAt());
+			twitterDataRepository.saveAndFlush(td);
+			contribution.incrementWriteCount(1);
+			log.info("storing data : " + td.toString());
+		}
+		contribution.setExitStatus(new ExitStatus(ExitStatus.COMPLETED
+				.getExitCode(),
+				"Process for job getTwitterDataJob started. total data : ["
+						+ contribution.getWriteCount() + "]"));
+		return RepeatStatus.FINISHED;
+	}
 }

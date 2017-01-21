@@ -4,6 +4,7 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.ydes.config.Application;
 import com.ydes.config.DatabaseConfig;
@@ -13,6 +14,7 @@ import com.ydes.config.DatabaseConfig;
  * @since
  */
 @Configuration
+@ActiveProfiles("unittest")
 @Import({ Application.class, BatchConfig.class, DatabaseConfig.class })
 public class BatchConfigTest {
 

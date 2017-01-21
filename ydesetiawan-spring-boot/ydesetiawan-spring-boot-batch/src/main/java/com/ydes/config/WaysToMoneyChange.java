@@ -1,4 +1,4 @@
-package com.ydes.batch;
+package com.ydes.config;
 
 /**
  * @author edys
@@ -29,6 +29,7 @@ public class WaysToMoneyChange {
 		}
 		return result[v.length][m];
 	}
+	
 
 	public static void main(String[] args) {
 		int m = 10;

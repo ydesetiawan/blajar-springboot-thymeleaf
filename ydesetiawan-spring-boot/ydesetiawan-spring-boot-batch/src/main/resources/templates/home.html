@@ -24,6 +24,7 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
+										<th></th>
 										<th>Profile Name</th>
 										<th>Posting Date</th>
 										<th>Tweet</th>
@@ -31,6 +32,8 @@
 								</thead>
 								<tbody>
 									<tr th:each="tweet : ${twitter_datas}">
+										<td><img
+											th:attr="src=@{${tweet.profileImgUrl}}" /></td>
 										<td th:text="${tweet.profileName}"></td>
 										<td
 											th:text="${@jobController.getIso8601DateFormat(tweet.postingDate)}"></td>
