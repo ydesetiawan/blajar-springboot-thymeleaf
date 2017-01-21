@@ -12,7 +12,7 @@ import com.ydes.common.util.AppsLifecycleShutdownEvent;
 
 /**
  * @author edys
- * @version 1.0, May 18, 2015
+ * @version 1.0, Jan 20, 2017
  * @since
  */
 public class ShutdownHook extends Thread {

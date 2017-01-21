@@ -46,8 +46,8 @@ import com.ydes.batch.JobLauncherDetails;
 
 /**
  * @author edys
- * @version 1.0, May 10, 2014
- * @since 3.1.0
+ * @version 1.0, Jan 20, 2017
+ * @since
  */
 @Controller
 public class JobController {
@@ -82,7 +82,7 @@ public class JobController {
 
     public String getIso8601DateFormat(Date date) {
         TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm a dd MMM yyyy");
         dateFormat.setTimeZone(timeZone);
         return dateFormat.format(date);
     }

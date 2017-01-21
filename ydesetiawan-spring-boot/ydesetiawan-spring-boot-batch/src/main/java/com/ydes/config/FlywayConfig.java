@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author edys
- * @version 1.0, Mar 18, 2014
- * @since 3.0.0
+ * @version 1.0, Jan 20, 2017
+ * @since
  */
 @Configuration
 @ConfigurationProperties(prefix = "flyway")

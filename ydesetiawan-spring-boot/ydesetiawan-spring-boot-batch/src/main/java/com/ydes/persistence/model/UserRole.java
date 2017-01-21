@@ -16,7 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author edys
- * @version 1.0, Feb 4, 2015
+ * @version 1.0, Jan 20, 2017
  * @since
  */
 @Entity

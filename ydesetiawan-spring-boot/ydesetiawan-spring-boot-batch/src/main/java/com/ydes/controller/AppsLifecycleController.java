@@ -12,8 +12,8 @@ import com.ydes.common.util.AppsLifecycleStartupEvent;
 
 /**
  * @author edys
- * @version 1.0, Jun 25, 2014
- * @since 3.1.0
+ * @version 1.0, Jan 20, 2017
+ * @since
  */
 @Controller
 public class AppsLifecycleController implements

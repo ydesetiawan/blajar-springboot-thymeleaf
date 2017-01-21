@@ -10,7 +10,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 /**
  * @author edys
- * @version 1.0, Jan 14, 2015
+ * @version 1.0, Jan 20, 2017
  * @since
  */
 @Configuration

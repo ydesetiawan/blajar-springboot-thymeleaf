@@ -2,8 +2,8 @@ package com.ydes.common.util;
 
 /**
  * @author edys
- * @version 1.0, Feb 8, 2014
- * @since 3.0.0
+ * @version 1.0, Jan 20, 2017
+ * @since
  */
 public class AppsLifecycleStartupEvent extends AppsLifecycleEvent {
 

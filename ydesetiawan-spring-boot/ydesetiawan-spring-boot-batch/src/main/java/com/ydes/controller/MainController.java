@@ -19,7 +19,7 @@ import com.ydes.persistence.repository.TwitterDataRepository;
 
 /**
  * @author edys
- * @version 1.0, Feb 4, 2015
+ * @version 1.0, Jan 20, 2017
  * @since
  */
 @Controller
@@ -58,6 +58,17 @@ public class MainController {
         }
         model.setViewName("login");
 
+        return model;
+
+    }
+    
+    @RequestMapping(value = { "/setting" }, method = RequestMethod.GET)
+    public ModelAndView setting() {
+        List<TwitterData> twitterDatas = twitterDataRepository
+                .findAllByOrderByPostingDateAsc();
+        ModelAndView model = new ModelAndView();
+        model.addObject("twitter_datas", twitterDatas);
+        model.setViewName("home");
         return model;
 
     }

@@ -9,26 +9,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author edys
+ * @version 1.0, Jan 21, 2017
+ * @since
+ */
 @Configuration
 public class TwitterDataBatchConfig {
 
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
+	@Autowired
+	private JobBuilderFactory jobBuilderFactory;
 
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+	@Autowired
+	private StepBuilderFactory stepBuilderFactory;
 
-    @Bean
-    public Job getTwitterDataJob(Step getTwitterDataStep) {
-        return jobBuilderFactory.get("getTwitterDataJob").preventRestart()
-                .incrementer(new TimestampIncrementer())
-                .flow(getTwitterDataStep).end().build();
-    }
+	@Bean
+	public Job getTwitterDataJob(Step getTwitterDataStep) {
+		return jobBuilderFactory.get("getTwitterDataJob").preventRestart()
+				.incrementer(new TimestampIncrementer())
+				.flow(getTwitterDataStep).end().build();
+	}
 
-    @Bean
-    protected Step getTwitterDataStep(Tasklet twitterDataTasklet) {
-        return stepBuilderFactory.get("getTwitterDataStep")
-                .tasklet(twitterDataTasklet).throttleLimit(1).build();
-    }
+	@Bean
+	protected Step getTwitterDataStep(Tasklet twitterDataTasklet) {
+		return stepBuilderFactory.get("getTwitterDataStep")
+				.tasklet(twitterDataTasklet).throttleLimit(1).build();
+	}
 
 }

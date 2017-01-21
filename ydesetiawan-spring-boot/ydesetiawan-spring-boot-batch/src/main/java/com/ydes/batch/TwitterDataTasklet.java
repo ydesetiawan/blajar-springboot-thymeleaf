@@ -24,7 +24,7 @@ import com.ydes.persistence.repository.TwitterDataRepository;
 
 /**
  * @author edys
- * @version 1.0, Jan 20, 2017
+ * @version 1.0, Jan 21, 2017
  * @since
  */
 @Component

@@ -13,7 +13,7 @@ import com.ydes.common.util.AppsLifecycleStartupEvent;
 
 /**
  * @author edys
- * @version 1.0, Jan 6, 2015
+ * @version 1.0, Jan 20, 2017
  * @since
  */
 

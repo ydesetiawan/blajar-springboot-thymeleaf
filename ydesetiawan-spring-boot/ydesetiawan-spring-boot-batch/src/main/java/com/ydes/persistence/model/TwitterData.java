@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 /**
  * @author edys
- * @version 1.0, Feb 4, 2015
+ * @version 1.0, Jan 21, 2017
  * @since
  */
 @Entity

@@ -4,8 +4,8 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * @author edys
- * @version 1.0, Jul 7, 2014
- * @since 3.1.1
+ * @version 1.0, Jan 20, 2017
+ * @since
  */
 public class AppsLifecycleEvent extends ApplicationEvent {
 

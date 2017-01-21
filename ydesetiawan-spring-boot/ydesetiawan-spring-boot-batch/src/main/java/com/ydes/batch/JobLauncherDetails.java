@@ -23,8 +23,8 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * @author edys
- * @version 1.0, May 28, 2014
- * @since 3.1.0
+ * @version 1.0, Jan 20, 2017
+ * @since
  */
 @PersistJobDataAfterExecution
 public class JobLauncherDetails extends QuartzJobBean {

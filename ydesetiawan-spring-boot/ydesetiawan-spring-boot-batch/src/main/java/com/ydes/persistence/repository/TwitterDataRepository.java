@@ -8,7 +8,7 @@ import com.ydes.persistence.model.TwitterData;
 
 /**
  * @author edys
- * @version 1.0, Jan 6, 2015
+ * @version 1.0, Jan 21, 2017
  * @since
  */
 public interface TwitterDataRepository extends
